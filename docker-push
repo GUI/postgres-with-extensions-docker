@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+set -Eeuxo pipefail
+
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-18.3' \
+      --tag 'ghcr.io/gui/postgres-with-extensions:18.3' --tag 'nickblah/postgres-with-extensions:18.3' --tag 'ghcr.io/gui/postgres-with-extensions:18' --tag 'nickblah/postgres-with-extensions:18' --tag 'ghcr.io/gui/postgres-with-extensions:18.3-trixie' --tag 'nickblah/postgres-with-extensions:18.3-trixie' --tag 'ghcr.io/gui/postgres-with-extensions:18-trixie' --tag 'nickblah/postgres-with-extensions:18-trixie' --tag 'ghcr.io/gui/postgres-with-extensions:trixie' --tag 'nickblah/postgres-with-extensions:trixie' --tag 'ghcr.io/gui/postgres-with-extensions:latest' --tag 'nickblah/postgres-with-extensions:latest' \
+      --file 18/trixie/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-18.3-bookworm' \
+      --tag 'ghcr.io/gui/postgres-with-extensions:18.3-bookworm' --tag 'nickblah/postgres-with-extensions:18.3-bookworm' --tag 'ghcr.io/gui/postgres-with-extensions:18-bookworm' --tag 'nickblah/postgres-with-extensions:18-bookworm' --tag 'ghcr.io/gui/postgres-with-extensions:bookworm' --tag 'nickblah/postgres-with-extensions:bookworm' \
+      --file 18/bookworm/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-17.9' \
+      --tag 'ghcr.io/gui/postgres-with-extensions:17.9' --tag 'nickblah/postgres-with-extensions:17.9' --tag 'ghcr.io/gui/postgres-with-extensions:17' --tag 'nickblah/postgres-with-extensions:17' --tag 'ghcr.io/gui/postgres-with-extensions:17.9-trixie' --tag 'nickblah/postgres-with-extensions:17.9-trixie' --tag 'ghcr.io/gui/postgres-with-extensions:17-trixie' --tag 'nickblah/postgres-with-extensions:17-trixie' \
+      --file 17/trixie/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-17.9-bookworm' \
+      --tag 'ghcr.io/gui/postgres-with-extensions:17.9-bookworm' --tag 'nickblah/postgres-with-extensions:17.9-bookworm' --tag 'ghcr.io/gui/postgres-with-extensions:17-bookworm' --tag 'nickblah/postgres-with-extensions:17-bookworm' \
+      --file 17/bookworm/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-16.13' \
+      --tag 'ghcr.io/gui/postgres-with-extensions:16.13' --tag 'nickblah/postgres-with-extensions:16.13' --tag 'ghcr.io/gui/postgres-with-extensions:16' --tag 'nickblah/postgres-with-extensions:16' --tag 'ghcr.io/gui/postgres-with-extensions:16.13-trixie' --tag 'nickblah/postgres-with-extensions:16.13-trixie' --tag 'ghcr.io/gui/postgres-with-extensions:16-trixie' --tag 'nickblah/postgres-with-extensions:16-trixie' \
+      --file 16/trixie/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-16.13-bookworm' \
+      --tag 'ghcr.io/gui/postgres-with-extensions:16.13-bookworm' --tag 'nickblah/postgres-with-extensions:16.13-bookworm' --tag 'ghcr.io/gui/postgres-with-extensions:16-bookworm' --tag 'nickblah/postgres-with-extensions:16-bookworm' \
+      --file 16/bookworm/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-15.17' \
+      --tag 'ghcr.io/gui/postgres-with-extensions:15.17' --tag 'nickblah/postgres-with-extensions:15.17' --tag 'ghcr.io/gui/postgres-with-extensions:15' --tag 'nickblah/postgres-with-extensions:15' --tag 'ghcr.io/gui/postgres-with-extensions:15.17-trixie' --tag 'nickblah/postgres-with-extensions:15.17-trixie' --tag 'ghcr.io/gui/postgres-with-extensions:15-trixie' --tag 'nickblah/postgres-with-extensions:15-trixie' \
+      --file 15/trixie/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-15.17-bookworm' \
+      --tag 'ghcr.io/gui/postgres-with-extensions:15.17-bookworm' --tag 'nickblah/postgres-with-extensions:15.17-bookworm' --tag 'ghcr.io/gui/postgres-with-extensions:15-bookworm' --tag 'nickblah/postgres-with-extensions:15-bookworm' \
+      --file 15/bookworm/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-14.22' \
+      --tag 'ghcr.io/gui/postgres-with-extensions:14.22' --tag 'nickblah/postgres-with-extensions:14.22' --tag 'ghcr.io/gui/postgres-with-extensions:14' --tag 'nickblah/postgres-with-extensions:14' --tag 'ghcr.io/gui/postgres-with-extensions:14.22-trixie' --tag 'nickblah/postgres-with-extensions:14.22-trixie' --tag 'ghcr.io/gui/postgres-with-extensions:14-trixie' --tag 'nickblah/postgres-with-extensions:14-trixie' \
+      --file 14/trixie/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-14.22-bookworm' \
+      --tag 'ghcr.io/gui/postgres-with-extensions:14.22-bookworm' --tag 'nickblah/postgres-with-extensions:14.22-bookworm' --tag 'ghcr.io/gui/postgres-with-extensions:14-bookworm' --tag 'nickblah/postgres-with-extensions:14-bookworm' \
+      --file 14/bookworm/postgres/Dockerfile \
+      .

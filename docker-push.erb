@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -Eeuxo pipefail
+
+<%- versions.each do |postgresql_version, variant_versions| -%>
+  <%- variant_versions.each do |data| -%>
+    docker buildx build \
+      --platform '<%= data.fetch(:platforms).join(",") %>' \
+      --push \
+      --cache-from '<%= "type=registry,ref=#{data.fetch(:build_cache_tag)}" %>' \
+      <%= data.fetch(:docker_image_tags).map { |tag| "--tag '#{tag}'" }.join(" ") %> \
+      --file <%= data.fetch(:filename) %> \
+      .
+  <%- end -%>
+<%- end -%>

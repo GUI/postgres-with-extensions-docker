@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+exitcode=0
+
+<%- versions.each do |postgresql_version, variant_versions| -%>
+  <%- variant_versions.each do |data| -%>
+    printf "<%= data.fetch(:variant_tag) %>: "
+    output=$(docker run -v $(pwd)/test.sh:/docker-entrypoint-initdb.d/test.sh -e POSTGRES_PASSWORD=password --rm '<%= "localhost:5000/#{data.fetch(:build_cache_tag)}" %>' 2>&1 || true)
+    if [[ "$output" =~ "PostGIS Tests: Error" ]]; then
+      exitcode=1
+      echo "Error"
+      echo "$output"
+      echo
+    elif [[ "$output" =~ "PostGIS Tests: OK" ]]; then
+      echo "OK"
+    else
+      exitcode=1
+      echo "Unexpected Error"
+      echo "$output"
+      echo
+    fi
+
+  <%- end -%>
+<%- end -%>
+
+exit "$exitcode"

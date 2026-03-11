@@ -1,0 +1,21 @@
+# postgres-with-extensions-docker
+
+Automated and up-to-date Docker images for all supported versions of PostgreSQL and all extensions available from the official [PGDG repo](https://www.postgresql.org/about/news/pgdg-apt-repository-for-debianubuntu-1432/).
+
+Images are based upon the [official Postgres images](https://hub.docker.com/_/postgres) but with all extensiosn from PGDG pre-installed. New versions of PostgreSQL should automatically be detected and trigger new docker images to built, tagged, and pushed by a daily [GitHub Actions workflow](https://github.com/GUI/postgres-with-extensions-docker/blob/main/.github/workflows/main.yml).
+
+## Container Registries
+
+Images are available from either Docker Hub or GitHub Container Registery:
+
+- [docker.io/nickblah/postgres-with-extensions](https://hub.docker.com/r/nickblah/postgres-with-extensions)
+- [ghcr.io/gui/postgres-with-extensions](https://github.com/users/GUI/packages/container/package/postgres-with-extensions)
+
+## Supported Tags and Respective Dockerfile Links
+
+<%- versions.each do |postgresql_version, variant_versions| -%>
+- PostgreSQL <%= postgresql_version %>
+  <%- variant_versions.each do |data| -%>
+    - [<%= data.fetch(:variant_tags).map { |tag| "`#{tag}`" }.join(", ") %>](https://github.com/GUI/postgres-with-extensions-docker/blob/main/<%= data.fetch(:filename) %>)
+  <%- end -%>
+<%- end -%>

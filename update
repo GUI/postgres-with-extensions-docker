@@ -1,0 +1,124 @@
+#!/usr/bin/env ruby
+
+require "erb"
+require "fileutils"
+require "open-uri"
+
+FileUtils.rm_rf(Dir.glob("[0-9]*"))
+
+github_image = "ghcr.io/gui/postgres-with-extensions"
+docker_hub_image = "nickblah/postgres-with-extensions"
+
+all_variant_tags = []
+versions = {}
+
+def parse_apt_packages(output)
+  output
+    .split(/[\r\n]{2,}/)
+    .select { |lines| lines.include?("Package:") }
+    .map { |lines| Hash[lines.split(/[\r\n]/).map { |r| r.split(/:\s+/, 2) }] }
+    .sort_by { |package| package.fetch("Version") }
+    .reverse
+end
+
+library = URI.open("https://raw.githubusercontent.com/docker-library/official-images/master/library/postgres")
+  .read
+  .split(/[\r\n]{2,}/)
+  .select { |lines| lines.include?("Tags:") }
+  .map { |lines| Hash[lines.split(/[\r\n]/).map { |r| r.split(/:\s+/, 2) }] }
+library.each do |postgres|
+  postgres_tags = postgres.fetch("Tags").split(/,\s*/)
+  postgres_version_tags = postgres_tags - ["latest"]
+  postgres_tag = postgres_version_tags.sort_by { |t| t.length }.last
+  postgres_version = postgres_version_tags.sort_by { |t| t.length }.first
+
+  if !postgres.fetch("Directory").include?("alpine")
+    system("docker", "pull", "postgres:#{postgres_tag}")
+
+    postgis_packages = parse_apt_packages(`docker run --rm postgres:#{postgres_tag} sh -c 'apt-get update && apt-cache search --full --names-only "^postgresql-$PG_MAJOR-postgis-[0-9\.]+$"'`)
+
+    variants = []
+    variant = {
+      :postgres_tag => postgres_tag,
+      :postgis_major => nil,
+    }
+    postgis_packages.each do |postgis_package|
+      variant[:postgis_major] = postgis_package.fetch("Package").split("-postgis-", 2).last
+
+      variants << variant
+    end
+
+    variants.each_with_index do |variant, variant_index|
+      template = ERB.new(File.read("Dockerfile.erb"), trim_mode: "-").result_with_hash(variant)
+
+      variant_tags = postgres_version_tags.map do |postgres_tag|
+        tags = [postgres_tag]
+        tags
+      end.flatten.uniq
+
+      if postgres_tags.include?("latest") && variant_index == 0
+        variant_tags << "latest"
+      end
+
+      variant_tags -= all_variant_tags
+      all_variant_tags += variant_tags
+
+      dir = "postgres"
+
+      filename = File.join(postgres.fetch("Directory"), dir, "Dockerfile")
+      FileUtils.mkdir_p(File.dirname(filename))
+      File.open(filename, "w") { |f| f.write(template) }
+
+      platforms = ["linux/amd64"]
+      # No ARM packages for postgis available for stretch.
+      unless postgres.fetch("Directory").include?("/stretch")
+        platforms << "linux/arm64"
+      end
+
+      docker_image_tags = variant_tags.map do |tag|
+        [
+          "#{github_image}:#{tag}",
+          "#{docker_hub_image}:#{tag}",
+        ]
+      end.flatten
+
+      variant_tag = variant_tags.first
+
+      build_cache_tag = "#{github_image}:build-cache-#{variant_tag}"
+
+      versions[postgres_version] ||= []
+      versions[postgres_version] << {
+        :postgis_major => variant.fetch(:postgis_major),
+        :variant_tag => variant_tag,
+        :variant_tags => variant_tags,
+        :build_cache_tag => build_cache_tag,
+        :docker_image_tags => docker_image_tags,
+        :filename => filename,
+        :platforms => platforms,
+      }
+    end
+  end
+end
+
+template = ERB.new(File.read("docker-build.erb"), trim_mode: "-").result_with_hash({
+  :versions => versions,
+})
+File.open("docker-build", "w") { |f| f.write(template) }
+FileUtils.chmod(0755, "docker-build")
+
+template = ERB.new(File.read("docker-push.erb"), trim_mode: "-").result_with_hash({
+  :versions => versions,
+})
+File.open("docker-push", "w") { |f| f.write(template) }
+FileUtils.chmod(0755, "docker-push")
+
+template = ERB.new(File.read("test.erb"), trim_mode: "-").result_with_hash({
+  :versions => versions,
+})
+File.open("test", "w") { |f| f.write(template) }
+FileUtils.chmod(0755, "test")
+
+template = ERB.new(File.read("README.md.erb"), trim_mode: "-").result_with_hash({
+  :versions => versions,
+})
+File.open("README.md", "w") { |f| f.write(template) }

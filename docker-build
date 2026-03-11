@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+
+set -Eeuxo pipefail
+
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --pull \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-18.3' \
+      --cache-to 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-18.3,mode=max' \
+      --tag 'localhost:5000/ghcr.io/gui/postgres-with-extensions:build-cache-18.3' \
+      --file 18/trixie/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --pull \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-18.3-bookworm' \
+      --cache-to 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-18.3-bookworm,mode=max' \
+      --tag 'localhost:5000/ghcr.io/gui/postgres-with-extensions:build-cache-18.3-bookworm' \
+      --file 18/bookworm/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --pull \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-17.9' \
+      --cache-to 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-17.9,mode=max' \
+      --tag 'localhost:5000/ghcr.io/gui/postgres-with-extensions:build-cache-17.9' \
+      --file 17/trixie/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --pull \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-17.9-bookworm' \
+      --cache-to 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-17.9-bookworm,mode=max' \
+      --tag 'localhost:5000/ghcr.io/gui/postgres-with-extensions:build-cache-17.9-bookworm' \
+      --file 17/bookworm/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --pull \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-16.13' \
+      --cache-to 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-16.13,mode=max' \
+      --tag 'localhost:5000/ghcr.io/gui/postgres-with-extensions:build-cache-16.13' \
+      --file 16/trixie/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --pull \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-16.13-bookworm' \
+      --cache-to 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-16.13-bookworm,mode=max' \
+      --tag 'localhost:5000/ghcr.io/gui/postgres-with-extensions:build-cache-16.13-bookworm' \
+      --file 16/bookworm/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --pull \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-15.17' \
+      --cache-to 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-15.17,mode=max' \
+      --tag 'localhost:5000/ghcr.io/gui/postgres-with-extensions:build-cache-15.17' \
+      --file 15/trixie/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --pull \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-15.17-bookworm' \
+      --cache-to 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-15.17-bookworm,mode=max' \
+      --tag 'localhost:5000/ghcr.io/gui/postgres-with-extensions:build-cache-15.17-bookworm' \
+      --file 15/bookworm/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --pull \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-14.22' \
+      --cache-to 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-14.22,mode=max' \
+      --tag 'localhost:5000/ghcr.io/gui/postgres-with-extensions:build-cache-14.22' \
+      --file 14/trixie/postgres/Dockerfile \
+      .
+    docker buildx build \
+      --platform 'linux/amd64,linux/arm64' \
+      --pull \
+      --push \
+      --cache-from 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-14.22-bookworm' \
+      --cache-to 'type=registry,ref=ghcr.io/gui/postgres-with-extensions:build-cache-14.22-bookworm,mode=max' \
+      --tag 'localhost:5000/ghcr.io/gui/postgres-with-extensions:build-cache-14.22-bookworm' \
+      --file 14/bookworm/postgres/Dockerfile \
+      .
