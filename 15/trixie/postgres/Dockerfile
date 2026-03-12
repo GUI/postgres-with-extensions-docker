@@ -1,6 +1,5 @@
 FROM postgres:15.17-trixie
 
-
 RUN apt-get update && \
   apt-cache showpkg postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR && \
   apt-get install -y --no-install-recommends \
@@ -21,7 +20,6 @@ RUN apt-get update && \
     postgresql-$PG_MAJOR-hypopg \
     postgresql-$PG_MAJOR-icu-ext \
     postgresql-$PG_MAJOR-ip4r \
-    postgresql-$PG_MAJOR-jit \
     postgresql-$PG_MAJOR-jsquery \
     postgresql-$PG_MAJOR-londiste-sql \
     postgresql-$PG_MAJOR-mimeo \
@@ -44,7 +42,6 @@ RUN apt-get update && \
     postgresql-$PG_MAJOR-pg-rewrite \
     postgresql-$PG_MAJOR-pg-rrule \
     postgresql-$PG_MAJOR-pg-stat-kcache \
-    postgresql-$PG_MAJOR-pg-stat-plans \
     postgresql-$PG_MAJOR-pg-track-settings \
     postgresql-$PG_MAJOR-pg-uuidv7 \
     postgresql-$PG_MAJOR-pg-wait-sampling \

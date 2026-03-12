@@ -40,10 +40,11 @@ library.each do |postgres|
     variants = []
     variant = {
       :postgres_tag => postgres_tag,
+      :postgres_major => postgres.fetch("Directory").to_i,
       :postgis_major => nil,
     }
     postgis_packages.each do |postgis_package|
-      variant[:postgis_major] = postgis_package.fetch("Package").split("-postgis-", 2).last
+      variant[:postgis_major] = postgis_package.fetch("Package").split("-postgis-", 2).last.to_i
 
       variants << variant
     end

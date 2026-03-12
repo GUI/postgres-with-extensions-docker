@@ -1,6 +1,5 @@
 FROM postgres:18.3-bookworm
 
-
 RUN apt-get update && \
   apt-cache showpkg postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR && \
   apt-get install -y --no-install-recommends \
